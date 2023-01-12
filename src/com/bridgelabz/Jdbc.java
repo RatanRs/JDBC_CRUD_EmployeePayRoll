@@ -1,7 +1,44 @@
 package com.bridgelabz;
 
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.util.Enumeration;
+
+/***
+ * 
+ * @author Admin
+ *
+ */
 public class Jdbc {
-public static void main(String[] args) {
-	System.out.println("Welcome to JDBC connectivity");
-}
+	public static void main(String[] args) {
+		System.out.println("Welcomr to Payroll_Service Jdbc program");
+
+		String url = "jdbc:mysql://localhost:3306/payrollservice?useSSL=false";
+		String username = "root";
+		String password = "Root";
+		Connection connection;
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			System.out.println("Driver Loaded!!");
+		} catch (ClassNotFoundException e) {
+			throw new IllegalStateException("cannot find Driver in classpath... " + e);
+		}
+		listDrivers();
+		try {
+			System.out.println("Connection url: " + url);
+			connection = DriverManager.getConnection(url, username, password);
+			System.out.println("Connection Successfull!!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void listDrivers() {
+		Enumeration<java.sql.Driver> driverList = DriverManager.getDrivers();
+		while (driverList.hasMoreElements()) {
+			Driver driverClass = (Driver) driverList.nextElement();
+			System.out.println(" " + driverClass.getClass().getName());
+		}
+	}
 }
