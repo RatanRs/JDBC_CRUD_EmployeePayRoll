@@ -22,6 +22,7 @@ public class Jdbc {
 		retrieveData(connection);
 		updateData(connection);
 		System.out.println(reteriveDataByName(connection));
+		particularDateRange(connection);
 	}
 
 	public static Connection connected() {
@@ -77,6 +78,22 @@ public class Jdbc {
 	            salary = (resultSet.getDouble("salary"));
 	        }
 	        return salary;
+	    }
+	 
+	 public static String particularDateRange(Connection connection) throws SQLException {
+	        String name = null;
+	        String query = "select * from employee_payroll where startDate between ? and ? ";
+	        PreparedStatement preparedStatement = connection.prepareStatement(query);
+	        preparedStatement.setString(1, "2022-11-22");
+	        preparedStatement.setString(2, "2022-10-23");
+	        ResultSet resultSet = preparedStatement.executeQuery();
+	        while (resultSet.next()) {
+	            System.out.println(" ");
+	            System.out.println(resultSet.getInt(1));
+	            System.out.println(resultSet.getString(2));
+	            name = (resultSet.getString("name"));
+	        }
+	        return name;
 	    }
 
 	public static void listDrivers() {
