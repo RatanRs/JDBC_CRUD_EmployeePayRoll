@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Enumeration;
+import java.util.Scanner;
 
 /***
  * 
@@ -14,11 +15,12 @@ import java.util.Enumeration;
  *
  */
 public class Jdbc {
-	static Connection connection = null;
+	static Connection connection  = null;
 
 	public static void main(String[] args) throws SQLException {
 		connection = connected();
 		retrieveData(connection);
+		updateData(connection);
 	}
 
 	public static Connection connected() {
@@ -44,16 +46,25 @@ public class Jdbc {
 	}
 
 	public static void retrieveData(Connection connection) throws SQLException {
-
-	
 		PreparedStatement preparedStatement = connection.prepareStatement("select * from employee_payroll where id=?");
 		preparedStatement.setInt(1, 1);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		while (resultSet.next()) {
 			System.out.println(resultSet.getInt("id"));
 			System.out.println(resultSet.getString("name"));
-
 		}
+	}
+	public static void updateData(Connection connection) throws SQLException {
+		Scanner scanner = new Scanner(System.in);
+		PreparedStatement preparedStatement = connection.prepareStatement("update employee_payroll set salary = ? where id =?;");
+		System.out.println("Enter salary to be updated: ");
+		double salary = scanner.nextDouble();
+		System.out.println("Enter at which id you want to update salary: ");
+		int id = scanner.nextInt();
+		preparedStatement.setDouble(1, salary);
+		preparedStatement.setInt(2, id);
+		preparedStatement.executeUpdate();
+		System.out.println("Updated Successfully.....!!!");
 	}
 
 	public static void listDrivers() {
